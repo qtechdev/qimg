@@ -9,7 +9,7 @@
 
 #include "image.hpp"
 
-image load_image(const char *path) {
+qimg::image qimg::load_image(const char *path) {
   image img;
 
   unsigned char *data = stbi_load(path, &img.w, &img.h, &img.ch, 0);
@@ -22,13 +22,13 @@ image load_image(const char *path) {
   return img;
 }
 
-bool save_image_png(const image &img, const std::string &path) {
+bool qimg::save_image_png(const image &img, const std::string &path) {
   return stbi_write_png(
     path.c_str(), img.w, img.h, img.ch, img.data.data(), img.w * img.ch
   );
 }
 
-image copy_image(const image &img) {
+qimg::image qimg::copy_image(const image &img) {
   image a;
 
   a.w = img.w;
