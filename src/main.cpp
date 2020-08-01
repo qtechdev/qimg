@@ -10,7 +10,7 @@ int main(int argc, const char *argv[]) {
   std::cout << "number of channels: " << img.ch << "\n";
 
   qimg::image copy = qimg::copy_image(img);
-  tx::grey(copy);
+  tx::quantise(copy, 4);
 
   qimg::save_image_png(copy, "data/out.png");
 
