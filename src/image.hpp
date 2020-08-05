@@ -15,7 +15,7 @@ namespace qimg {
 
   inline image operator|(image lhs, const image &rhs) { return lhs |= rhs; }
 
-  image load_image(const char *p);
+  image load_image(const std::string &p);
   bool save_image_png(const image &img, const std::string &path);
   image copy_image(const image &img);
 }

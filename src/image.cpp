@@ -26,10 +26,10 @@ qimg::image &qimg::image::operator|=(const image &rhs) {
   return *this;
 }
 
-qimg::image qimg::load_image(const char *path) {
+qimg::image qimg::load_image(const std::string &path) {
   image img;
 
-  unsigned char *data = stbi_load(path, &img.w, &img.h, &img.ch, 0);
+  unsigned char *data = stbi_load(path.c_str(), &img.w, &img.h, &img.ch, 0);
 
   int data_size = img.w * img.h * img.ch;
   img.data.assign(data, data + data_size);

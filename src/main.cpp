@@ -1,12 +1,73 @@
 #include <bitset>
 #include <iostream>
 
+#include <qarg/qarg.hpp>
+
 #include "image.hpp"
 #include "transform.hpp"
 
+int extract(const std::string &c, const std::string &o);
+int insert(const std::string &c, const std::string &o, const std::string &s);
+
 int main(int argc, const char *argv[]) {
-  qimg::image carrier = qimg::load_image("data/kitten.png");
-  qimg::image secret  = qimg::load_image("data/kitten2.png");
+  qarg::parser args;
+  args.add<bool>('h', "display this text");
+  args.add<bool>('x', "extract hidden image");
+  args.add<std::string>('i', "input file", true);
+  args.add<std::string>('o', "output file", true);
+  args.add<std::string>('s', "secret file");
+
+  try {
+    args.parse(argc, argv);
+  } catch (std::invalid_argument &e) {
+    std::cerr << e.what() << "\n";
+    std::cerr << args.help();
+    return 1;
+  }
+
+  if (auto h = args.get<bool>('h'); h && *h) {
+    std::cout << args.help();
+    return 0;
+  }
+
+  std::string carrier_filepath = *args.get<std::string>('i');
+  std::string output_filepath = *args.get<std::string>('o');
+
+  bool do_extraction = *args.get<bool>('x');
+
+  std::string secret_filepath;
+  if (!do_extraction) {
+    auto args_s = args.get<std::string>('s');
+    if (!args_s) {
+      std::cerr << "please specify one of -s, -x\n";
+      return 2;
+    } else {
+      secret_filepath = *args_s;
+    }
+  }
+
+  if (do_extraction) {
+    return extract(carrier_filepath, output_filepath);
+  } else {
+    return insert(carrier_filepath, output_filepath, secret_filepath);
+  }
+}
+
+int extract(const std::string &c, const std::string &o) {
+  qimg::image hidden = qimg::load_image(c);
+
+  tx::mask(hidden, 0b00000011);
+  tx::expand(hidden, 2);
+
+  qimg::save_image_png(hidden, o);
+
+  return 0;
+}
+
+
+int insert(const std::string &c, const std::string &o, const std::string &s) {
+  qimg::image carrier = qimg::load_image(c);
+  qimg::image secret  = qimg::load_image(s);
 
   std::cout << "image size: " << carrier.w << " by " << carrier.h << "\n";
   std::cout << "number of channels: " << carrier.ch << "\n";
@@ -28,7 +89,7 @@ int main(int argc, const char *argv[]) {
 
   qimg::image output = carrier | secret;
 
-  qimg::save_image_png(output, "data/out.png");
+  qimg::save_image_png(output, o);
 
   return 0;
 }
