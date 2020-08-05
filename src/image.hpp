@@ -9,7 +9,11 @@ namespace qimg {
     int h;
     int ch;
     std::vector<unsigned char> data;
+
+    image &operator|=(const image &rhs);
   };
+
+  inline image operator|(image lhs, const image &rhs) { return lhs |= rhs; }
 
   image load_image(const char *p);
   bool save_image_png(const image &img, const std::string &path);

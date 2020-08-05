@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <string>
+#include <stdexcept>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -8,6 +9,22 @@
 #include "stb_image_write.h"
 
 #include "image.hpp"
+
+qimg::image &qimg::image::operator|=(const image &rhs) {
+  if (
+    (w != rhs.w) ||
+    (h != rhs.h) ||
+    (ch != rhs.ch)
+  ) {
+    throw std::invalid_argument("Images must be the same dimensions");
+  }
+
+  for (int i = 0; i < (w * h * ch); ++i) {
+    data[i] |= rhs.data[i];
+  }
+
+  return *this;
+}
 
 qimg::image qimg::load_image(const char *path) {
   image img;
