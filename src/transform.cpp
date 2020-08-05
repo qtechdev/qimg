@@ -1,83 +1,73 @@
 #include <cmath>
+#include <cstdint>
+#include <functional>
 
 #include "image.hpp"
 #include "transform.hpp"
 
-void tx::grey(qimg::image &img) {
+void tx::transform(qimg::image &img, const tx_func &f, const uint8_t data) {
   for (int y = 0; y < img.h; ++y) {
     for (int x = 0; x < img.w; ++x) {
       int pixel_index = ((y * img.w) + x) * img.ch;
 
-      float r = img.data[pixel_index    ];
-      float g = img.data[pixel_index + 1];
-      float b = img.data[pixel_index + 2];
+      uint8_t r = img.data[pixel_index    ];
+      uint8_t g = img.data[pixel_index + 1];
+      uint8_t b = img.data[pixel_index + 2];
+      uint8_t new_r;
+      uint8_t new_g;
+      uint8_t new_b;
 
-      unsigned char grey = (r * 0.3) + (g * 0.59) + (b * 0.11);
+      f(r, g, b, new_r, new_g, new_b, data);
 
-      img.data[pixel_index    ] = grey;
-      img.data[pixel_index + 1] = grey;
-      img.data[pixel_index + 2] = grey;
+      img.data[pixel_index    ] = new_r;
+      img.data[pixel_index + 1] = new_g;
+      img.data[pixel_index + 2] = new_b;
     }
   }
 }
 
-void tx::quantise(qimg::image &img, const int levels) {
-  shrink(img, levels);
-  expand(img, levels);
+void tx::greyscale(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  uint8_t grey = (r * 0.3) + (g * 0.59) + (b * 0.11);
+
+  new_r = grey;
+  new_g = grey;
+  new_b = grey;
 }
 
-void tx::shrink(qimg::image &img, const int bits) {
-  const int levels = 1 << (bits - 1);
-
-  for (int y = 0; y < img.h; ++y) {
-    for (int x = 0; x < img.w; ++x) {
-      int pixel_index = ((y * img.w) + x) * img.ch;
-
-      float r = img.data[pixel_index    ];
-      float g = img.data[pixel_index + 1];
-      float b = img.data[pixel_index + 2];
-
-      float factor = 255 / (levels - 1);
-
-      img.data[pixel_index    ] = std::round(r / factor);
-      img.data[pixel_index + 1] = std::round(g / factor);
-      img.data[pixel_index + 2] = std::round(b / factor);
-    }
-  }
+void tx::mask(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  new_r = r & data;
+  new_g = g & data;
+  new_b = b & data;
 }
 
-void tx::expand(qimg::image &img, const int bits) {
-  const int levels = 1 << (bits - 1);
+void tx::shrink(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  float factor = 255 / (data - 1);
 
-  for (int y = 0; y < img.h; ++y) {
-    for (int x = 0; x < img.w; ++x) {
-      int pixel_index = ((y * img.w) + x) * img.ch;
-
-      float r = img.data[pixel_index    ];
-      float g = img.data[pixel_index + 1];
-      float b = img.data[pixel_index + 2];
-
-      float factor = 255 / (levels - 1);
-
-      img.data[pixel_index    ] = r * factor;
-      img.data[pixel_index + 1] = g * factor;
-      img.data[pixel_index + 2] = b * factor;
-    }
-  }
+  new_r = std::round(r / factor);
+  new_g = std::round(g / factor);
+  new_b = std::round(b / factor);
 }
 
-void tx::mask(qimg::image &img, const unsigned char m) {
-  for (int y = 0; y < img.h; ++y) {
-    for (int x = 0; x < img.w; ++x) {
-      int pixel_index = ((y * img.w) + x) * img.ch;
+void tx::expand(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  float factor = 255 / (data - 1);
 
-      unsigned char r = img.data[pixel_index    ];
-      unsigned char g = img.data[pixel_index + 1];
-      unsigned char b = img.data[pixel_index + 2];
-
-      img.data[pixel_index    ] = r & m;
-      img.data[pixel_index + 1] = g & m;
-      img.data[pixel_index + 2] = b & m;
-    }
-  }
+  new_r = r * factor;
+  new_g = g * factor;
+  new_b = b * factor;
 }

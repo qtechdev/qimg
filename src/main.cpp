@@ -1,4 +1,3 @@
-#include <bitset>
 #include <iostream>
 
 #include <qarg/qarg.hpp>
@@ -56,8 +55,8 @@ int main(int argc, const char *argv[]) {
 int extract(const std::string &c, const std::string &o) {
   qimg::image hidden = qimg::load_image(c);
 
-  tx::mask(hidden, 0b00000011);
-  tx::expand(hidden, 2);
+  tx::transform(hidden, tx::mask, 0b00000011);
+  tx::transform(hidden, tx::expand, 2);
 
   qimg::save_image_png(hidden, o);
 
@@ -84,8 +83,8 @@ int insert(const std::string &c, const std::string &o, const std::string &s) {
     return 1;
   }
 
-  tx::mask(carrier, 0b11111100);
-  tx::shrink(secret,  2);
+  tx::transform(carrier, tx::mask, 0b11111100);
+  tx::transform(secret, tx::shrink, 2);
 
   qimg::image output = carrier | secret;
 
