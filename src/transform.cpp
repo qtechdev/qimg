@@ -53,7 +53,7 @@ void tx::shrink(
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   const uint8_t data
 ) {
-  float factor = 255 / (data - 1);
+  float factor = 255 / (1 << (data - 1));
 
   new_r = std::round(r / factor);
   new_g = std::round(g / factor);
@@ -65,7 +65,7 @@ void tx::expand(
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   const uint8_t data
 ) {
-  float factor = 255 / (data - 1);
+  float factor = 255 / (1 << (data - 1));
 
   new_r = r * factor;
   new_g = g * factor;

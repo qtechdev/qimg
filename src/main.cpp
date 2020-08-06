@@ -55,8 +55,8 @@ int main(int argc, const char *argv[]) {
 int extract(const std::string &c, const std::string &o) {
   qimg::image hidden = qimg::load_image(c);
 
-  tx::transform(hidden, tx::mask, 0b00000011);
-  tx::transform(hidden, tx::expand, 2);
+  tx::transform(hidden, tx::mask, 0b00001111);
+  tx::transform(hidden, tx::expand, 4);
 
   qimg::save_image_png(hidden, o);
 
@@ -83,8 +83,8 @@ int insert(const std::string &c, const std::string &o, const std::string &s) {
     return 1;
   }
 
-  tx::transform(carrier, tx::mask, 0b11111100);
-  tx::transform(secret, tx::shrink, 2);
+  tx::transform(carrier, tx::mask, 0b11110000);
+  tx::transform(secret, tx::shrink, 4);
 
   qimg::image output = carrier | secret;
 
