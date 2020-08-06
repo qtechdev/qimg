@@ -34,6 +34,16 @@ namespace tx {
     uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
     const uint8_t data=0
   );
+  void split(
+    const uint8_t r, const uint8_t g, const uint8_t b,
+    uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+    const uint8_t data=0
+  );
+  void combine(
+    const uint8_t r, const uint8_t g, const uint8_t b,
+    uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+    const uint8_t data=0
+  );
 }
 
 #endif // __TRANSFORM_HPP__

@@ -71,3 +71,29 @@ void tx::expand(
   new_g = g * factor;
   new_b = b * factor;
 }
+
+void tx::split(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  new_r = (r & 0b00110000) >> 4;
+  new_g = (r & 0b00001100) >> 2;
+  new_b = (r & 0b00000011);
+}
+
+void tx::combine(
+  const uint8_t r, const uint8_t g, const uint8_t b,
+  uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
+  const uint8_t data
+) {
+  uint8_t grey = (
+    ((r & 0b00000011) << 4) |
+    ((g & 0b00000011) << 2) |
+     (b & 0b00000011)
+  );
+
+  new_r = grey;
+  new_g = grey;
+  new_b = grey;
+}
