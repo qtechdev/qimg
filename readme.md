@@ -14,6 +14,12 @@ Extracts the hidden data from `-i` and saves at `-o`.
 - both images must be of the same dimensions
 - only supports png
 
+## todo
+- add support for more image formats
+- add support for mismatched image dimensions
+- add support for different data encodings (1 greyscale pixel can be spread across 4 rgba channels, etc.)
+- add dithering support for better hidden image quality
+
 ## footnote
 `stb_image.h` and `stb_image_write.h` are public domain files from
 http://nothings.org/stb.
