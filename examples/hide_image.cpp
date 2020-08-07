@@ -17,17 +17,10 @@ static const op_list op_in = {
   {tx::shrink, 6},
   {tx::split, 0}
 };
-static const op_list op_ex = {
-  {tx::combine, 0},
-  {tx::expand, 6}
-};
 #else
 constexpr uint8_t bit_mask = 0b00001111;
 static const op_list op_in = {
   {tx::shrink, 4},
-};
-static const op_list op_ex = {
-  {tx::expand, 4}
 };
 #endif
 
@@ -37,17 +30,27 @@ int insert(
   bool verbose=false
 );
 
-int main(int argc, const char *argv[]) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
   qarg::parser args;
   args.add<bool>('h', "display this text");
-  args.add<bool>('x', "extract hidden image");
   args.add<bool>('v', "verbose");
   args.add<std::string>('i', "input file", true);
   args.add<std::string>('o', "output file", true);
-  args.add<std::string>('s', "secret file");
+  args.add<std::string>('s', "secret file", true);
+
+  int c = 7;
+  const char *v[] = {
+    "hide_image",
+    "-i",
+    "data/kitten.png",
+    "-s",
+    "data/kitten2.png",
+    "-o",
+    "data/out.png"
+  };
 
   try {
-    args.parse(argc, argv);
+    args.parse(c, v);
   } catch (std::invalid_argument &e) {
     std::cerr << e.what() << "\n";
     std::cerr << args.help();
@@ -61,41 +64,11 @@ int main(int argc, const char *argv[]) {
 
   std::string carrier_filepath = *args.get<std::string>('i');
   std::string output_filepath = *args.get<std::string>('o');
+  std::string secret_filepath = *args.get<std::string>('s');
 
-  bool do_extraction = *args.get<bool>('x');
-
-  std::string secret_filepath;
-  if (!do_extraction) {
-    auto args_s = args.get<std::string>('s');
-    if (!args_s) {
-      std::cerr << "please specify one of -s, -x\n";
-      return 2;
-    } else {
-      secret_filepath = *args_s;
-    }
-  }
-
-  if (do_extraction) {
-    return extract(carrier_filepath, output_filepath);
-  } else {
-    return insert(
-      carrier_filepath, output_filepath, secret_filepath, *args.get<bool>('v')
-    );
-  }
-}
-
-int extract(const std::string &c, const std::string &o) {
-  qimg::image hidden = qimg::load_image(c);
-
-  tx::transform(hidden, tx::mask, bit_mask);
-
-  for (const auto &[f, v] : op_ex) {
-    tx::transform(hidden, f, v);
-  }
-
-  qimg::save_image_png(hidden, o);
-
-  return 0;
+  return insert(
+    carrier_filepath, output_filepath, secret_filepath, *args.get<bool>('v')
+  );
 }
 
 int insert(
