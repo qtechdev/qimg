@@ -29,7 +29,7 @@ void tx::transform(qimg::image &img, const tx_func &f, const uint8_t data) {
 void tx::greyscale(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
-  const uint8_t data
+  [[maybe_unused]] const uint8_t data
 ) {
   uint8_t grey = (r * 0.3) + (g * 0.59) + (b * 0.11);
 
@@ -73,9 +73,9 @@ void tx::expand(
 }
 
 void tx::split(
-  const uint8_t r, const uint8_t g, const uint8_t b,
+  const uint8_t r, [[maybe_unused]] const uint8_t g, [[maybe_unused]] const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
-  const uint8_t data
+  [[maybe_unused]] const uint8_t data
 ) {
   new_r = (r & 0b00110000) >> 4;
   new_g = (r & 0b00001100) >> 2;
@@ -85,7 +85,7 @@ void tx::split(
 void tx::combine(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
-  const uint8_t data
+  [[maybe_unused]] const uint8_t data
 ) {
   uint8_t grey = (
     ((r & 0b00000011) << 4) |
