@@ -7,11 +7,17 @@
 
 namespace qimg {
   struct pixel {
-    uint8_t r, g, b;
+    uint8_t r = 0;
+    uint8_t g = 0;
+    uint8_t b = 0;
     pixel &operator|=(const pixel &rhs);
+    pixel &operator+=(const pixel &rhs);
+    pixel &operator*=(const float &rhs);
   };
 
   inline pixel operator|(pixel lhs, const pixel &rhs) { return lhs |= rhs; }
+  inline pixel operator+(pixel lhs, const pixel &rhs) { return lhs += rhs; }
+  inline pixel operator*(pixel lhs, const float rhs) { return lhs *= rhs; }
 
   struct image {
     int w;

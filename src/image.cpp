@@ -18,6 +18,22 @@ qimg::pixel &qimg::pixel::operator|=(const pixel &rhs) {
   return *this;
 }
 
+qimg::pixel &qimg::pixel::operator+=(const pixel &rhs) {
+  r += rhs.r;
+  g += rhs.g;
+  b += rhs.b;
+
+  return *this;
+}
+
+qimg::pixel &qimg::pixel::operator*=(const float &rhs) {
+  r = std::clamp<int>(r * rhs, 0, 255);
+  g = std::clamp<int>(g * rhs, 0, 255);
+  b = std::clamp<int>(b * rhs, 0, 255);
+
+  return *this;
+}
+
 qimg::image &qimg::image::operator|=(const image &rhs) {
   if (
     (w != rhs.w) ||
