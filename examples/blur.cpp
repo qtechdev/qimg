@@ -6,9 +6,9 @@
 
 #include "ktransform.hpp"
 
-using operation_list = std::vector<std::pair<qimg::tx_kernel_func, uint8_t>>;
+using operation_list = std::vector<std::pair<qimg::tx_kernel5_func, uint8_t>>;
 static const operation_list op_list = {
-  {qimg::blur, 0},
+  {qimg::blur5, 0},
 };
 
 int manip(const std::string &c, const std::string &o, const bool verbose);

@@ -15,6 +15,16 @@ namespace qimg {
   };
 
   mat3 getmat3(const image &img, int x, int y);
+
+  struct mat5 {
+    pixel p[25];
+  };
+
+  struct kernel5 {
+    float p[25];
+  };
+
+  mat5 getmat5(const image &img, int x, int y);
 }
 
 #endif // __KERNEL_HPP__

@@ -24,3 +24,21 @@ qimg::mat3 qimg::getmat3(const image &img, int x, int y) {
 
   return m;
 }
+
+qimg::mat5 qimg::getmat5(const image &img, int x, int y) {
+  mat5 m;
+
+  for (int j = -2; j <= 2; ++j) {
+    int y_pos = std::clamp(y + j, 0, img.h);
+
+    for (int i = -2; i <= 2; ++i) {
+      int x_pos = std::clamp(x + i, 0, img.w);
+
+      int index = (i + 2) + ((j + 2) * 5);
+
+      m.p[index] = img.data[(x_pos) + (y_pos * img.w)];
+    }
+  }
+
+  return m;
+}
