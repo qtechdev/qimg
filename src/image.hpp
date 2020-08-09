@@ -3,12 +3,20 @@
 #include <string>
 #include <vector>
 
+#include <cstdint>
+
 namespace qimg {
+  struct pixel {
+    uint8_t r, g, b;
+    pixel &operator|=(const pixel &rhs);
+  };
+
+  inline pixel operator|(pixel lhs, const pixel &rhs) { return lhs |= rhs; }
+
   struct image {
     int w;
     int h;
-    int ch;
-    std::vector<unsigned char> data;
+    std::vector<pixel> data;
 
     image &operator|=(const image &rhs);
   };

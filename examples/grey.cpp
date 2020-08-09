@@ -54,7 +54,6 @@ int manip(const std::string &c, const std::string &o, const bool verbose) {
 
   if (verbose) {
     std::cout << "image size: " << img.w << " by " << img.h << "\n";
-    std::cout << "number of channels: " << img.ch << "\n";
   }
 
   for (const auto &[f, v] : op_list) {

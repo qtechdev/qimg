@@ -8,20 +8,16 @@
 void tx::transform(qimg::image &img, const tx_func &f, const uint8_t data) {
   for (int y = 0; y < img.h; ++y) {
     for (int x = 0; x < img.w; ++x) {
-      int pixel_index = ((y * img.w) + x) * img.ch;
+      int pixel_index = (y * img.w) + x;
 
-      uint8_t r = img.data[pixel_index    ];
-      uint8_t g = img.data[pixel_index + 1];
-      uint8_t b = img.data[pixel_index + 2];
-      uint8_t new_r;
-      uint8_t new_g;
-      uint8_t new_b;
+      qimg::pixel p = img.data[pixel_index];
+      qimg::pixel new_p;
 
-      f(r, g, b, new_r, new_g, new_b, data);
+      f(p.r, p.g, p.b, new_p.r, new_p.g, new_p.b, data);
 
-      img.data[pixel_index    ] = new_r;
-      img.data[pixel_index + 1] = new_g;
-      img.data[pixel_index + 2] = new_b;
+      img.data[pixel_index].r = new_p.r;
+      img.data[pixel_index].g = new_p.g;
+      img.data[pixel_index].b = new_p.b;
     }
   }
 }

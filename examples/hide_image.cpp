@@ -79,16 +79,13 @@ int insert(
   qimg::image secret  = qimg::load_image(s);
 
   if (verbose) {
-    std::cout << "image size: " << carrier.w << " by " << carrier.h << "\n";
-    std::cout << "number of channels: " << carrier.ch << "\n";
-    std::cout << "image size: " << secret.w << " by " << secret.h << "\n";
-    std::cout << "number of channels: " << secret.ch << "\n";
+    std::cout << "carrier image size: " << carrier.w << " by " << carrier.h << "\n";
+    std::cout << "secret image size: " << secret.w << " by " << secret.h << "\n";
   }
 
   if (
     (carrier.w != secret.w) ||
-    (carrier.h != secret.h) ||
-    (carrier.ch != secret.ch)
+    (carrier.h != secret.h)
   ) {
     std::cerr << "Images must be the same dimensions\n";
     return 1;
