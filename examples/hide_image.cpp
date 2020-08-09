@@ -7,20 +7,20 @@
 #include "image.hpp"
 #include "transform.hpp"
 
-using op_list = std::vector<std::pair<tx::tx_func, uint8_t>>;
+using op_list = std::vector<std::pair<qimg::tx_func, uint8_t>>;
 
 // #define CONVERT_TO_GREYSCALE
 #ifdef CONVERT_TO_GREYSCALE
 constexpr uint8_t bit_mask = 0b00000011;
 static const op_list op_in = {
-  {tx::greyscale, 0},
-  {tx::shrink, 6},
-  {tx::split, 0}
+  {qimg::greyscale, 0},
+  {qimg::shrink, 6},
+  {qimg::split, 0}
 };
 #else
 constexpr uint8_t bit_mask = 0b00001111;
 static const op_list op_in = {
-  {tx::shrink, 4},
+  {qimg::shrink, 4},
 };
 #endif
 
@@ -91,10 +91,10 @@ int insert(
     return 1;
   }
 
-  tx::transform(carrier, tx::mask, ~bit_mask);
+  qimg::transform(carrier, qimg::mask, ~bit_mask);
 
   for (const auto &[f, v] : op_in) {
-    tx::transform(secret, f, v);
+    qimg::transform(secret, f, v);
   }
 
   secret |= carrier;

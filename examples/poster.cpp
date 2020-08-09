@@ -7,10 +7,10 @@
 #include "image.hpp"
 #include "transform.hpp"
 
-using operation_list = std::vector<std::pair<tx::tx_func, uint8_t>>;
+using operation_list = std::vector<std::pair<qimg::tx_func, uint8_t>>;
 static const operation_list op_list = {
-  {tx::shrink, 4},
-  {tx::expand, 4},
+  {qimg::shrink, 4},
+  {qimg::expand, 4},
 };
 
 int manip(const std::string &c, const std::string &o, const bool verbose);
@@ -58,7 +58,7 @@ int manip(const std::string &c, const std::string &o, const bool verbose) {
   }
 
   for (const auto &[f, v] : op_list) {
-    tx::transform(img, f, v);
+    qimg::transform(img, f, v);
   }
 
   qimg::save_image_png(img, o);

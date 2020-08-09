@@ -5,13 +5,13 @@
 #include "image.hpp"
 #include "transform.hpp"
 
-void tx::transform(qimg::image &img, const tx_func &f, const uint8_t data) {
+void qimg::transform(image &img, const tx_func &f, const uint8_t data) {
   for (int y = 0; y < img.h; ++y) {
     for (int x = 0; x < img.w; ++x) {
       int pixel_index = (y * img.w) + x;
 
-      qimg::pixel p = img.data[pixel_index];
-      qimg::pixel new_p;
+      pixel p = img.data[pixel_index];
+      pixel new_p;
 
       f(p.r, p.g, p.b, new_p.r, new_p.g, new_p.b, data);
 
@@ -22,7 +22,7 @@ void tx::transform(qimg::image &img, const tx_func &f, const uint8_t data) {
   }
 }
 
-void tx::greyscale(
+void qimg::greyscale(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   [[maybe_unused]] const uint8_t data
@@ -34,7 +34,7 @@ void tx::greyscale(
   new_b = grey;
 }
 
-void tx::mask(
+void qimg::mask(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   const uint8_t data
@@ -44,7 +44,7 @@ void tx::mask(
   new_b = b & data;
 }
 
-void tx::shrink(
+void qimg::shrink(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   const uint8_t data
@@ -56,7 +56,7 @@ void tx::shrink(
   new_b = std::round(b / factor);
 }
 
-void tx::expand(
+void qimg::expand(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   const uint8_t data
@@ -68,7 +68,7 @@ void tx::expand(
   new_b = b * factor;
 }
 
-void tx::split(
+void qimg::split(
   const uint8_t r, [[maybe_unused]] const uint8_t g, [[maybe_unused]] const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   [[maybe_unused]] const uint8_t data
@@ -78,7 +78,7 @@ void tx::split(
   new_b = (r & 0b00000011);
 }
 
-void tx::combine(
+void qimg::combine(
   const uint8_t r, const uint8_t g, const uint8_t b,
   uint8_t &new_r, uint8_t &new_g, uint8_t &new_b,
   [[maybe_unused]] const uint8_t data

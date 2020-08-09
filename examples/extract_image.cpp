@@ -7,19 +7,19 @@
 #include "image.hpp"
 #include "transform.hpp"
 
-using op_list = std::vector<std::pair<tx::tx_func, uint8_t>>;
+using op_list = std::vector<std::pair<qimg::tx_func, uint8_t>>;
 
 // #define CONVERT_TO_GREYSCALE
 #ifdef CONVERT_TO_GREYSCALE
 constexpr uint8_t bit_mask = 0b00000011;
 static const op_list op_ex = {
-  {tx::combine, 0},
-  {tx::expand, 6}
+  {qimg::combine, 0},
+  {qimg::expand, 6}
 };
 #else
 constexpr uint8_t bit_mask = 0b00001111;
 static const op_list op_ex = {
-  {tx::expand, 4}
+  {qimg::expand, 4}
 };
 #endif
 
@@ -67,10 +67,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
 int extract(const std::string &c, const std::string &o) {
   qimg::image hidden = qimg::load_image(c);
 
-  tx::transform(hidden, tx::mask, bit_mask);
+  qimg::transform(hidden, qimg::mask, bit_mask);
 
   for (const auto &[f, v] : op_ex) {
-    tx::transform(hidden, f, v);
+    qimg::transform(hidden, f, v);
   }
 
   qimg::save_image_png(hidden, o);
