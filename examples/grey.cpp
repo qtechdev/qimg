@@ -7,9 +7,9 @@
 #include "image.hpp"
 #include "transform.hpp"
 
-using operation_list = std::vector<std::pair<tx::tx_func, uint8_t>>;
+using operation_list = std::vector<std::pair<qimg::tx_func, uint8_t>>;
 static const operation_list op_list = {
-  {tx::greyscale, 0},
+  {qimg::greyscale, 0},
 };
 
 int manip(const std::string &c, const std::string &o, const bool verbose);
@@ -54,11 +54,10 @@ int manip(const std::string &c, const std::string &o, const bool verbose) {
 
   if (verbose) {
     std::cout << "image size: " << img.w << " by " << img.h << "\n";
-    std::cout << "number of channels: " << img.ch << "\n";
   }
 
   for (const auto &[f, v] : op_list) {
-    tx::transform(img, f, v);
+    qimg::transform(img, f, v);
   }
 
   qimg::save_image_png(img, o);

@@ -4,13 +4,11 @@
 
 #include <qarg/qarg.hpp>
 
-#include "image.hpp"
-#include "transform.hpp"
+#include "ktransform.hpp"
 
-using operation_list = std::vector<std::pair<qimg::tx_func, uint8_t>>;
+using operation_list = std::vector<std::pair<qimg::tx_kernel5_func, uint8_t>>;
 static const operation_list op_list = {
-  {qimg::shrink, 4},
-  {qimg::expand, 4},
+  {qimg::blur5, 0},
 };
 
 int manip(const std::string &c, const std::string &o, const bool verbose);
@@ -24,7 +22,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
 
   int c = 5;
   const char *v[] = {
-    "poster",
+    "blur",
     "-i",
     "data/kitten.png",
     "-o",

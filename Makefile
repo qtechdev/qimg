@@ -67,7 +67,8 @@ clean:
 .PHONY: install
 install:
 	cp ${LIB_VER} /usr/local/lib
-	cp -r ${HEADERS} /usr/local/include/${NAME}
+	mkdir -p /usr/local/include/${NAME}/
+	cp -r ${HEADERS} /usr/local/include/${NAME}/
 
 .PHONY: uninstall
 uninstall:
